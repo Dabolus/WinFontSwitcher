@@ -1,4 +1,3 @@
-# [![Windows Font Switcher](https://projects.dabolus.com/WinFontSwitcher/icon.svg)](https://github.com/Dabolus/WinFontSwitcher/releases/latest)
 <h1 align="center">Windows Font Switcher</h1>
 <h3 align="center">A super-simple tool to change Windows default system font</h3>
 
