@@ -136,6 +136,10 @@ Do you want to restart it now?</value>
   <data name="FontAppliedPromptTitle" xml:space="preserve">
     <value>Apply your changes</value>
   </data>
+  <data name="FontResetPromptContent" xml:space="preserve">
+    <value>You need to restart your computer to be able to use the default system font again.
+Do you want to restart it now?</value>
+  </data>
   <data name="FontsToReplaceLabel" xml:space="preserve">
     <value>Fonts to replace:</value>
   </data>

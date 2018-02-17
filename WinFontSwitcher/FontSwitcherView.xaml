@@ -100,7 +100,7 @@
                     HorizontalAlignment="Right" Margin="20,0,20,20">
             <Button Padding="20,3" Margin="20,0,0,0" Command="{Binding ExitCommand}"
                     Content="{x:Static p:Resources.ExitButton}" />
-            <Button Padding="20,3" Margin="20,0,0,0" Click="ResetButton_Click" x:Name="ResetButton"
+            <Button Padding="20,3" Margin="20,0,0,0" Command="{Binding ResetCommand}"
                     Content="{x:Static p:Resources.Reset}" />
             <Button Padding="20,3" Margin="20,0,0,0" Command="{Binding TestFontCommand}"
                     Content="{Binding TestFontButtonText}" />

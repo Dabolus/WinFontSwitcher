@@ -29,6 +29,7 @@ namespace WinFontSwitcher {
         private bool _isShowingPreview;
 
         public ICommand ApplyCommand { get; set; }
+        public ICommand ResetCommand { get; set; }
 
         public ICommand TestFontCommand { get; set; }
         public ICommand ExitCommand { get; set; }
@@ -37,6 +38,7 @@ namespace WinFontSwitcher {
             try {
                 _fs = new FontSwitcherModel();
                 ApplyCommand = new RelayCommand(ApplyFont);
+                ResetCommand = new RelayCommand(ResetFont);
                 TestFontCommand = new RelayCommand(OpenFontPreview);
                 ExitCommand = new RelayCommand(Exit);
             }
@@ -57,6 +59,16 @@ namespace WinFontSwitcher {
             try {
                 _fs.ApplyFont();
                 ShowFontAppliedPrompt(SelectedPrimaryFont.Key);
+            }
+            catch (Exception e) {
+                ShowError(e.Message);
+            }
+        }
+
+        private void ResetFont(object ignored) {
+            try {
+                _fs.ResetFont();
+                ShowFontResetPrompt();
             }
             catch (Exception e) {
                 ShowError(e.Message);
@@ -91,6 +103,16 @@ namespace WinFontSwitcher {
         private static void ShowFontAppliedPrompt(string fontName) {
             if (MessageBox.Show(
                     string.Format(Properties.Resources.FontAppliedPromptContent, fontName),
+                    Properties.Resources.FontAppliedPromptTitle,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                ) == MessageBoxResult.Yes)
+                Process.Start("shutdown", "/r /t 0");
+        }
+
+        private static void ShowFontResetPrompt() {
+            if (MessageBox.Show(
+                    Properties.Resources.FontResetPromptContent,
                     Properties.Resources.FontAppliedPromptTitle,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question

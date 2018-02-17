@@ -116,6 +116,16 @@ namespace WinFontSwitcher.Properties {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a You need to restart your computer to be able to use the default system font again.
+        ///Do you want to restart it now?.
+        /// </summary>
+        public static string FontResetPromptContent {
+            get {
+                return ResourceManager.GetString("FontResetPromptContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Fonts to replace:.
         /// </summary>
         public static string FontsToReplaceLabel {

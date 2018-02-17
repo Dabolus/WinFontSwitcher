@@ -55,8 +55,8 @@ namespace WinFontSwitcher {
 
 
         public FontSwitcherModel() {
-            RegistrySystemFonts = GetSystemFonts();
             InitializeRegistry();
+            RegistrySystemFonts = GetSystemFonts();
             var originalSegoe = DefaultSegoeFonts.First();
             SelectedPrimaryFont = originalSegoe;
             SelectedFallbackFont = new KeyValuePair<string, string>($"{originalSegoe.Key} Backup", originalSegoe.Value);
@@ -111,6 +111,17 @@ namespace WinFontSwitcher {
                 if (key == null)
                     throw new Exception(Properties.Resources.NoRegistryAccessException);
                 key.SetValue(SelectedPrimaryFont.Key, SelectedFallbackFont.Key, RegistryValueKind.String);
+            }
+        }
+
+        public void ResetFont() {
+            using (var key =
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts", true)
+            ) {
+                if (key == null)
+                    throw new Exception(Properties.Resources.NoRegistryAccessException);
+                foreach (var defaultSegoeFont in DefaultSegoeFonts)
+                    key.SetValue(defaultSegoeFont.Key, defaultSegoeFont.Value, RegistryValueKind.String);
             }
         }
 
