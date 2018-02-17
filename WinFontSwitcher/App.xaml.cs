@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace WinFontSwitcher
+﻿namespace WinFontSwitcher
 {
     /// <summary>
     /// Logica di interazione per App.xaml

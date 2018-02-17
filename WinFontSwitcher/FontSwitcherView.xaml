@@ -1,0 +1,102 @@
+﻿<Window x:Class="WinFontSwitcher.FontSwitcherView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:vm="clr-namespace:WinFontSwitcher"
+        xmlns:p="clr-namespace:WinFontSwitcher.Properties"
+        Title="{x:Static p:Resources.Title}" Width="640" Height="480">
+    <Window.DataContext>
+        <vm:FontSwitcherViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Row="0" Column="0" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static p:Resources.PrimaryFontLabel}" FontSize="14"
+                       FontWeight="Bold"
+                       Margin="0,0,10,6" />
+            <ListBox Grid.Row="1" Grid.Column="0"
+                     Margin="0,0,10,10"
+                     ItemsSource="{Binding RegistrySystemFonts}"
+                     SelectedItem="{Binding SelectedPrimaryFont}"
+                     FontSize="13" SelectionChanged="ListFonts_SelectionChanged"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Key}" FontFamily="{Binding Path=Key}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static p:Resources.FallbackFontLabel}" FontSize="14"
+                       FontWeight="Bold"
+                       Margin="0,10,10,6" />
+            <ListBox Grid.Row="3" Grid.Column="0"
+                     Margin="0,0,10,0"
+                     ItemsSource="{Binding RegistrySystemFonts}"
+                     SelectedItem="{Binding SelectedFallbackFont}"
+                     FontSize="13" SelectionChanged="ListFonts_SelectionChanged"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Key}" FontFamily="{Binding Path=Key}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Static p:Resources.FontsToReplaceLabel}" FontSize="14"
+                       FontWeight="Bold" Margin="10,0,0,6" />
+            <ScrollViewer Grid.Row="1" Grid.RowSpan="3" Grid.Column="1" HorizontalScrollBarVisibility="Hidden"
+                          Margin="10,0,0,0"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding FontsToReplace}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox FontFamily="{Binding Key}" Content="{Binding Key}"
+                                          IsChecked="{Binding Value}" Margin="0,3" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="0" Margin="20" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static p:Resources.TestFontLabel}" FontSize="14"
+                       FontWeight="Bold"
+                       Margin="0,0,0,6" />
+            <TextBox Grid.Row="1" Grid.Column="0" Padding="3" FontSize="13" TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     FontFamily="{Binding Path=SelectedPrimaryFont.Key}"
+                     HorizontalScrollBarVisibility="Disabled"
+                     VerticalScrollBarVisibility="Auto" />
+        </Grid>
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal"
+                    HorizontalAlignment="Right" Margin="20,0,20,20">
+            <Button Padding="20,3" Margin="20,0,0,0" Click="ExitButton_Click"
+                    Content="{x:Static p:Resources.ExitButton}" />
+            <Button Padding="20,3" Margin="20,0,0,0" Click="ResetButton_Click" x:Name="ResetButton"
+                    Content="{x:Static p:Resources.Reset}" />
+            <Button Padding="20,3" Margin="20,0,0,0" Command="{Binding TestFontCommand}"
+                    Content="{x:Static p:Resources.TestFontButton}" />
+            <Button Padding="20,3" Margin="20,0,0,0" Click="ApplyButton_Click" x:Name="ApplyButton"
+                    IsEnabled="false" Content="{x:Static p:Resources.ApplyButton}" />
+        </StackPanel>
+    </Grid>
+</Window>
