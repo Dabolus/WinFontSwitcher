@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -29,11 +30,13 @@ namespace WinFontSwitcher {
         public ICommand ApplyCommand { get; set; }
 
         public ICommand TestFontCommand { get; set; }
+        public ICommand ExitCommand { get; set; }
 
         public FontSwitcherViewModel() {
             _fs = new FontSwitcherModel();
             ApplyCommand = new RelayCommand(_fs.ApplyFont, param => true);
             TestFontCommand = new RelayCommand(OpenFontPreview);
+            ExitCommand = new RelayCommand(Exit);
         }
 
         private void OpenFontPreview(object ignored) {
@@ -41,6 +44,10 @@ namespace WinFontSwitcher {
             NotifyPropertyChanged("MainUIVisibility");
             NotifyPropertyChanged("TestFontUIVisibility");
             NotifyPropertyChanged("TestFontButtonText");
+        }
+
+        private void Exit(object ignored) {
+            Environment.Exit(0);
         }
 
         public IList<KeyValuePair<string, string>> RegistrySystemFonts => _fs.RegistrySystemFonts;
