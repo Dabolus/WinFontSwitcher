@@ -15,7 +15,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Row="0" Column="0" Margin="20">
+        <Grid Row="0" Column="0" Margin="20" Visibility="{Binding MainUIVisibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -73,7 +73,7 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
-        <Grid Grid.Row="0" Grid.Column="0" Margin="20" Visibility="Hidden">
+        <Grid Grid.Row="0" Grid.Column="0" Margin="20" Visibility="{Binding TestFontUIVisibility}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -94,7 +94,7 @@
             <Button Padding="20,3" Margin="20,0,0,0" Click="ResetButton_Click" x:Name="ResetButton"
                     Content="{x:Static p:Resources.Reset}" />
             <Button Padding="20,3" Margin="20,0,0,0" Command="{Binding TestFontCommand}"
-                    Content="{x:Static p:Resources.TestFontButton}" />
+                    Content="{Binding TestFontButtonText}" />
             <Button Padding="20,3" Margin="20,0,0,0" Click="ApplyButton_Click" x:Name="ApplyButton"
                     IsEnabled="false" Content="{x:Static p:Resources.ApplyButton}" />
         </StackPanel>

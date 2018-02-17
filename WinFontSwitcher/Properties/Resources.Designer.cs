@@ -97,6 +97,15 @@ namespace WinFontSwitcher.Properties {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Go back.
+        /// </summary>
+        public static string GoBackButton {
+            get {
+                return ResourceManager.GetString("GoBackButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Primary font:.
         /// </summary>
         public static string PrimaryFontLabel {

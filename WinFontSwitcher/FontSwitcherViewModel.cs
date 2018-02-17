@@ -4,61 +4,60 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 
-namespace System.Runtime.CompilerServices
-{
-    internal sealed class CallerMemberNameAttribute : Attribute
-    {
-    }
+namespace System.Runtime.CompilerServices {
+    internal sealed class CallerMemberNameAttribute : Attribute { }
 }
 
-namespace WinFontSwitcher
-{
-    public class FontSwitcherViewModel : INotifyPropertyChanged
-    {
+namespace WinFontSwitcher {
+    public class FontSwitcherViewModel : INotifyPropertyChanged {
         private readonly FontSwitcherModel _fs;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "") {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public string MainUIVisibility => _isShowingPreview ? "Hidden" : "Visible";
+        public string TestFontUIVisibility => _isShowingPreview ? "Visible" : "Hidden";
+
+        public string TestFontButtonText =>
+            _isShowingPreview ? Properties.Resources.GoBackButton : Properties.Resources.TestFontButton;
+
+        private bool _isShowingPreview;
 
         public ICommand ApplyCommand { get; set; }
 
         public ICommand TestFontCommand { get; set; }
 
-        public FontSwitcherViewModel()
-        {
+        public FontSwitcherViewModel() {
             _fs = new FontSwitcherModel();
             ApplyCommand = new RelayCommand(_fs.ApplyFont, param => true);
             TestFontCommand = new RelayCommand(OpenFontPreview);
         }
 
-        private void OpenFontPreview(object ignored)
-        {
-            MessageBox.Show("Ciao", "Test");
+        private void OpenFontPreview(object ignored) {
+            _isShowingPreview = !_isShowingPreview;
+            NotifyPropertyChanged("MainUIVisibility");
+            NotifyPropertyChanged("TestFontUIVisibility");
+            NotifyPropertyChanged("TestFontButtonText");
         }
 
         public IList<KeyValuePair<string, string>> RegistrySystemFonts => _fs.RegistrySystemFonts;
 
         public IList<MutableKeyVal<string, bool>> FontsToReplace => _fs.FontsToReplace;
 
-        public KeyValuePair<string, string> SelectedPrimaryFont
-        {
+        public KeyValuePair<string, string> SelectedPrimaryFont {
             get => _fs.SelectedPrimaryFont;
-            set
-            {
+            set {
                 _fs.SelectedPrimaryFont = value;
                 NotifyPropertyChanged();
             }
         }
 
-        public KeyValuePair<string, string> SelectedFallbackFont
-        {
+        public KeyValuePair<string, string> SelectedFallbackFont {
             get => _fs.SelectedFallbackFont;
-            set
-            {
+            set {
                 _fs.SelectedFallbackFont = value;
                 NotifyPropertyChanged();
             }

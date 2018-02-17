@@ -129,6 +129,9 @@
   <data name="FontsToReplaceLabel" xml:space="preserve">
     <value>Fonts to replace:</value>
   </data>
+  <data name="GoBackButton" xml:space="preserve">
+    <value>Go back</value>
+  </data>
   <data name="PrimaryFontLabel" xml:space="preserve">
     <value>Primary font:</value>
   </data>
