@@ -65,8 +65,7 @@
                     <ItemsControl ItemsSource="{Binding FontsToReplace}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <CheckBox FontFamily="{Binding Key}" Content="{Binding Key}"
-                                          IsChecked="{Binding Value}" Margin="0,3" />
+                                <CheckBox Content="{Binding Key}" IsChecked="{Binding Value}" Margin="0,3" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
