@@ -124,6 +124,15 @@ namespace WinFontSwitcher.Properties {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Fallback font....
+        /// </summary>
+        public static string TestFallbackFontPlaceholder {
+            get {
+                return ResourceManager.GetString("TestFallbackFontPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Test.
         /// </summary>
         public static string TestFontButton {
@@ -133,11 +142,20 @@ namespace WinFontSwitcher.Properties {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Test your font here:.
+        ///   Cerca una stringa localizzata simile a Test your fonts here:.
         /// </summary>
         public static string TestFontLabel {
             get {
                 return ResourceManager.GetString("TestFontLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Primary font....
+        /// </summary>
+        public static string TestPrimaryFontPlaceholder {
+            get {
+                return ResourceManager.GetString("TestPrimaryFontPlaceholder", resourceCulture);
             }
         }
         

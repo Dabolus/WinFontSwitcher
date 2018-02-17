@@ -12,22 +12,7 @@ namespace WinFontSwitcher
         public FontSwitcherView()
         {
             InitializeComponent();
-            /*try
-            {
-                _currentFont = GetCurrentFont();
-                ResetButton.IsEnabled = _currentFont != "Segoe UI";
-                ListFonts.SelectedValue = _currentFont;
-            }
-            catch (Exception ex)
-            {
-                ShowError(ex.Message);
-            }*/
         }
-
-/*        private static string GetCurrentFont()
-        {
-            return "";
-        }*/
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
@@ -73,11 +58,6 @@ namespace WinFontSwitcher
             {
                 ShowError(ex.Message);
             }*/
-        }
-
-        private void ListFonts_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // ApplyButton.IsEnabled = ListFonts.SelectedValue.ToString() != _currentFont;
         }
         /*
         private static void SetFont(string font)

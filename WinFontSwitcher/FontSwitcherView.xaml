@@ -33,7 +33,7 @@
                      Margin="0,0,10,10"
                      ItemsSource="{Binding RegistrySystemFonts}"
                      SelectedItem="{Binding SelectedPrimaryFont}"
-                     FontSize="13" SelectionChanged="ListFonts_SelectionChanged"
+                     FontSize="13"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -48,7 +48,7 @@
                      Margin="0,0,10,0"
                      ItemsSource="{Binding RegistrySystemFonts}"
                      SelectedItem="{Binding SelectedFallbackFont}"
-                     FontSize="13" SelectionChanged="ListFonts_SelectionChanged"
+                     FontSize="13"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -77,13 +77,23 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static p:Resources.TestFontLabel}" FontSize="14"
                        FontWeight="Bold"
                        Margin="0,0,0,6" />
             <TextBox Grid.Row="1" Grid.Column="0" Padding="3" FontSize="13" TextWrapping="Wrap"
+                     Margin="0,0,0,10"
                      AcceptsReturn="True"
+                     Text="{x:Static p:Resources.TestPrimaryFontPlaceholder}"
                      FontFamily="{Binding Path=SelectedPrimaryFont.Key}"
+                     HorizontalScrollBarVisibility="Disabled"
+                     VerticalScrollBarVisibility="Auto" />
+            <TextBox Grid.Row="2" Grid.Column="0" Padding="3" FontSize="13" TextWrapping="Wrap"
+                     Margin="0,10,0,0"
+                     AcceptsReturn="True"
+                     Text="{x:Static p:Resources.TestFallbackFontPlaceholder}"
+                     FontFamily="{Binding Path=SelectedFallbackFont.Key}"
                      HorizontalScrollBarVisibility="Disabled"
                      VerticalScrollBarVisibility="Auto" />
         </Grid>
@@ -95,8 +105,8 @@
                     Content="{x:Static p:Resources.Reset}" />
             <Button Padding="20,3" Margin="20,0,0,0" Command="{Binding TestFontCommand}"
                     Content="{Binding TestFontButtonText}" />
-            <Button Padding="20,3" Margin="20,0,0,0" Click="ApplyButton_Click" x:Name="ApplyButton"
-                    IsEnabled="false" Content="{x:Static p:Resources.ApplyButton}" />
+            <Button Padding="20,3" Margin="20,0,0,0" Command="{Binding ApplyCommand}"
+                    Content="{x:Static p:Resources.ApplyButton}" />
         </StackPanel>
     </Grid>
 </Window>

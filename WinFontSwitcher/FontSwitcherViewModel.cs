@@ -19,6 +19,7 @@ namespace WinFontSwitcher {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        // This variables and computations are merely for the UI, so we can leave them out of the model
         public string MainUIVisibility => _isShowingPreview ? "Hidden" : "Visible";
         public string TestFontUIVisibility => _isShowingPreview ? "Visible" : "Hidden";
 
@@ -34,7 +35,7 @@ namespace WinFontSwitcher {
 
         public FontSwitcherViewModel() {
             _fs = new FontSwitcherModel();
-            ApplyCommand = new RelayCommand(_fs.ApplyFont, param => true);
+            ApplyCommand = new RelayCommand(_fs.ApplyFont);
             TestFontCommand = new RelayCommand(OpenFontPreview);
             ExitCommand = new RelayCommand(Exit);
         }

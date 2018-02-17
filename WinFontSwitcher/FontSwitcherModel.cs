@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Microsoft.Win32;
 
 namespace WinFontSwitcher
@@ -86,8 +87,8 @@ namespace WinFontSwitcher
             return fontsList;
         }
 
-        public void ApplyFont(object font)
-        {
+        public void ApplyFont(object ignored) {
+            MessageBox.Show(SelectedFallbackFont.Key, SelectedPrimaryFont.Key);
         }
 
         public IList<KeyValuePair<string, string>> RegistrySystemFonts;
