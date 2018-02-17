@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -15,9 +16,8 @@ namespace WinFontSwitcher {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "") {
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         // This variables and computations are merely for the UI, so we can leave them out of the model
         public string MainUIVisibility => _isShowingPreview ? "Hidden" : "Visible";
@@ -34,10 +34,16 @@ namespace WinFontSwitcher {
         public ICommand ExitCommand { get; set; }
 
         public FontSwitcherViewModel() {
-            _fs = new FontSwitcherModel();
-            ApplyCommand = new RelayCommand(_fs.ApplyFont);
-            TestFontCommand = new RelayCommand(OpenFontPreview);
-            ExitCommand = new RelayCommand(Exit);
+            try {
+                _fs = new FontSwitcherModel();
+                ApplyCommand = new RelayCommand(ApplyFont);
+                TestFontCommand = new RelayCommand(OpenFontPreview);
+                ExitCommand = new RelayCommand(Exit);
+            }
+            catch (Exception e) {
+                ShowError(string.Format(Properties.Resources.UnableToInitializeError, e.Message));
+                Environment.Exit(1);
+            }
         }
 
         private void OpenFontPreview(object ignored) {
@@ -47,9 +53,17 @@ namespace WinFontSwitcher {
             NotifyPropertyChanged("TestFontButtonText");
         }
 
-        private void Exit(object ignored) {
-            Environment.Exit(0);
+        private void ApplyFont(object ignored) {
+            try {
+                _fs.ApplyFont();
+                ShowFontAppliedPrompt(SelectedPrimaryFont.Key);
+            }
+            catch (Exception e) {
+                ShowError(e.Message);
+            }
         }
+
+        private void Exit(object ignored) => Environment.Exit(0);
 
         public IList<KeyValuePair<string, string>> RegistrySystemFonts => _fs.RegistrySystemFonts;
 
@@ -69,6 +83,19 @@ namespace WinFontSwitcher {
                 _fs.SelectedFallbackFont = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        private static void ShowError(string msg) =>
+            MessageBox.Show(msg, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+
+        private static void ShowFontAppliedPrompt(string fontName) {
+            if (MessageBox.Show(
+                    string.Format(Properties.Resources.FontAppliedPromptContent, fontName),
+                    Properties.Resources.FontAppliedPromptTitle,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                ) == MessageBoxResult.Yes)
+                Process.Start("shutdown", "/r /t 0");
         }
     }
 }

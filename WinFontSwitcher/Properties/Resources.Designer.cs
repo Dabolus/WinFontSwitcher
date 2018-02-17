@@ -70,6 +70,15 @@ namespace WinFontSwitcher.Properties {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Error.
+        /// </summary>
+        public static string ErrorTitle {
+            get {
+                return ResourceManager.GetString("ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Exit.
         /// </summary>
         public static string ExitButton {
@@ -88,6 +97,25 @@ namespace WinFontSwitcher.Properties {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a You need to restart your computer to be able to use &quot;{0}&quot; as your new font.
+        ///Do you want to restart it now?.
+        /// </summary>
+        public static string FontAppliedPromptContent {
+            get {
+                return ResourceManager.GetString("FontAppliedPromptContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Apply your changes.
+        /// </summary>
+        public static string FontAppliedPromptTitle {
+            get {
+                return ResourceManager.GetString("FontAppliedPromptTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Fonts to replace:.
         /// </summary>
         public static string FontsToReplaceLabel {
@@ -102,6 +130,15 @@ namespace WinFontSwitcher.Properties {
         public static string GoBackButton {
             get {
                 return ResourceManager.GetString("GoBackButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Unable to access the registry key..
+        /// </summary>
+        public static string NoRegistryAccessException {
+            get {
+                return ResourceManager.GetString("NoRegistryAccessException", resourceCulture);
             }
         }
         
@@ -165,6 +202,17 @@ namespace WinFontSwitcher.Properties {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Unable to initialize the program!
+        ///More info:
+        ///{0}.
+        /// </summary>
+        public static string UnableToInitializeError {
+            get {
+                return ResourceManager.GetString("UnableToInitializeError", resourceCulture);
             }
         }
     }

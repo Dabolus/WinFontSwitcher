@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using Microsoft.Win32;
 
-namespace WinFontSwitcher
-{
-    public class FontSwitcherModel
-    {
-        private static readonly IList<KeyValuePair<string, string>> DefaultSegoeUIFonts =
-            new List<KeyValuePair<string, string>>
-            {
+namespace WinFontSwitcher {
+    public class FontSwitcherModel {
+        private static readonly IList<KeyValuePair<string, string>> DefaultSegoeFonts =
+            new List<KeyValuePair<string, string>> {
                 new KeyValuePair<string, string>("Segoe UI (TrueType)", "segoeui.ttf"),
                 new KeyValuePair<string, string>("Segoe UI Black (TrueType)", "seguibl.ttf"),
                 new KeyValuePair<string, string>("Segoe UI Black Italic (TrueType)", "seguibli.ttf"),
@@ -34,61 +30,88 @@ namespace WinFontSwitcher
             };
 
         public IList<MutableKeyVal<string, bool>> FontsToReplace =
-            new List<MutableKeyVal<string, bool>>
-            {
-                new MutableKeyVal<string, bool>("Segoe UI (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Black (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Black Italic (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Bold (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Bold Italic (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Emoji (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Historic (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Italic (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Light (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Light Italic (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Semibold (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Semibold Italic (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Semilight (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Semilight Italic (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe UI Symbol (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe MDL2 Assets (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe Print (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe Print Bold (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe Script (TrueType)", false),
-                new MutableKeyVal<string, bool>("Segoe Script Bold (TrueType)", false)
+            new List<MutableKeyVal<string, bool>> {
+                new MutableKeyVal<string, bool>("Segoe UI (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Black (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Black Italic (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Bold (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Bold Italic (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Emoji (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Historic (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Italic (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Light (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Light Italic (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Semibold (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Semibold Italic (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Semilight (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Semilight Italic (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe UI Symbol (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe MDL2 Assets (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe Print (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe Print Bold (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe Script (TrueType)", true),
+                new MutableKeyVal<string, bool>("Segoe Script Bold (TrueType)", true)
             };
 
 
-        public FontSwitcherModel()
-        {
+        public FontSwitcherModel() {
             RegistrySystemFonts = GetSystemFonts();
-            SelectedPrimaryFont = DefaultSegoeUIFonts.First();
+            InitializeRegistry();
+            var originalSegoe = DefaultSegoeFonts.First();
+            SelectedPrimaryFont = originalSegoe;
+            SelectedFallbackFont = new KeyValuePair<string, string>($"{originalSegoe.Key} Backup", originalSegoe.Value);
         }
 
-        private static IList<KeyValuePair<string, string>> GetSystemFonts()
-        {
+        // This method "backups" the original Segoe fonts so that they can still be used
+        private void InitializeRegistry() {
+            using (var key =
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts", true)
+            ) {
+                if (key == null)
+                    throw new Exception(Properties.Resources.NoRegistryAccessException);
+                foreach (var segoeFont in DefaultSegoeFonts)
+                    key.SetValue($"{segoeFont.Key} Backup", segoeFont.Value, RegistryValueKind.String);
+            }
+        }
+
+        private static IList<KeyValuePair<string, string>> GetSystemFonts() {
             var fontsList = new List<KeyValuePair<string, string>>();
-            try
-            {
+            try {
                 using (var key =
                     Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts")
-                )
-                {
-                    var fonts = key?.GetValueNames() ?? new string[0];
+                ) {
+                    if (key == null)
+                        throw new Exception(Properties.Resources.NoRegistryAccessException);
+                    var fonts = key.GetValueNames();
                     fontsList.AddRange(fonts.Select(font =>
                         new KeyValuePair<string, string>(font, key.GetValue(font).ToString())));
                 }
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 // ignored
             }
 
             return fontsList;
         }
 
-        public void ApplyFont(object ignored) {
-            MessageBox.Show(SelectedFallbackFont.Key, SelectedPrimaryFont.Key);
+        public void ApplyFont() {
+            using (var key =
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts", true)
+            ) {
+                if (key == null)
+                    throw new Exception(Properties.Resources.NoRegistryAccessException);
+                foreach (var fontToReplace in FontsToReplace)
+                    if (fontToReplace.Value)
+                        key.SetValue(fontToReplace.Key, SelectedPrimaryFont.Value, RegistryValueKind.String);
+            }
+
+            using (var key =
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontSubstitutes", true)
+            ) {
+                if (key == null)
+                    throw new Exception(Properties.Resources.NoRegistryAccessException);
+                key.SetValue(SelectedPrimaryFont.Key, SelectedFallbackFont.Key, RegistryValueKind.String);
+            }
         }
 
         public IList<KeyValuePair<string, string>> RegistrySystemFonts;

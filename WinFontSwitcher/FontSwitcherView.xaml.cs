@@ -116,10 +116,5 @@ namespace WinFontSwitcher
                 key.DeleteValue("Segoe UI");
             }
         }*/
-
-        private static void ShowError(string msg)
-        {
-            MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
     }
 }
